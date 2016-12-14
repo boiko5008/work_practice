@@ -1,8 +1,8 @@
 <?php
 	session_start();
 	
-	if(session_destroy()) // Destroying All Sessions
+	if(session_destroy()) // destroy all sessions
 	{
-		header("Location: index.php"); // Redirecting To Home Page
+		header("Location: index.php"); // redirection
 	}
 ?>

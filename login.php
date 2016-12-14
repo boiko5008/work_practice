@@ -1,27 +1,27 @@
 <?php
-session_start(); // Starting Session
+session_start(); // start
 
-$error=''; // Variable To Store Error Message
+$error=''; // var for error
 
 if (isset($_POST['submit'])) {
 		if (empty($_POST['username']) || empty($_POST['password'])) {
 		$error = "Username or Password is invalid";
 	}
 	else {
-		// Define $username and $password
+		// define $username and $password
 		$username=$_POST['username'];
 		$password=$_POST['password'];
 		
-		// Establishing Connection with Server by passing server_name, user_id and password as a parameter
+		// connectiing with the server by passing server_name, user_id and password as a parameter
 		$connection = mysql_connect("localhost", "boiko", "vesko123");
 		
-		// To protect MySQL injection for Security purpose
+		// to protect MySQL injection for security purpose
 		$username = stripslashes($username);
 		$password = stripslashes($password);
 		$username = mysql_real_escape_string($username);
 		$password = mysql_real_escape_string($password);
 		
-		// Selecting Database
+		// selecting database
 		$db = mysql_select_db("company", $connection);
 		
 		// SQL query to fetch information of registerd users and finds user match.
@@ -29,15 +29,15 @@ if (isset($_POST['submit'])) {
 		$rows = mysql_num_rows($query);
 		if ($rows == 1) {
 		
-			$_SESSION['login_user']=$username; // Initializing Session
+			$_SESSION['login_user']=$username; // starting session
 			
-			header("location: protected.php"); // Redirecting To Other Page
+			header("location: protected.php"); // redirecting to other page
 		} 
 		else {
 			$error = "Username or Password is invalid";
 		}
 		
-		mysql_close($connection); // Closing Connection
+		mysql_close($connection); // closing connection
 	}
 }
 ?>
