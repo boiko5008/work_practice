@@ -13,15 +13,16 @@
 	</head>
 	<body>
 		<div id="main">
-			<h1>PHP Login Test</h1>
+			<h1>PHP Account Test</h1>
+			
 			<div id="login">
 				<h2>Login Form</h2>
 				<hr>
 				<form action="" method="post">
-					<label><strong>UserName :</strong></label>
+					<label>UserName :</label>
 					<input id="name" name="username" placeholder="username" type="text">
 					
-					<label><strong>Password :</strong></label>
+					<label>Password :</label>
 					<input id="password" name="password" placeholder="**********" type="password">
 					<hr>
 					<input name="submit" type="submit" value=" Login ">
@@ -29,6 +30,10 @@
 					<span><?php echo $error; ?></span>
 				</form>
 			</div>
+			
+			<div class="form-group">
+				<a href="register.php">Sign up Here...</a>
+            </div>
 		</div>
 	</body>
 </html>

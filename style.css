@@ -1,5 +1,5 @@
 @import http://fonts.googleapis.com/css?family=Raleway;
- 
+
 #main {
 	width:960px;
 	margin:50px auto;
@@ -27,12 +27,29 @@ hr {
 
 #login {
 	width:300px;
-	float:left;
+	float: left;
 	border-radius:10px;
 	font-family:raleway;
 	border:2px solid #ccc;
 	padding:10px 40px 25px;
 	margin-top:70px
+}
+
+#reg_form {
+	width:300px;
+	float: left;
+	border-radius:10px;
+	font-family:raleway;
+	border:2px solid #ccc;
+	padding:10px 40px 25px;
+	margin-top:70px
+}
+
+#form-group {
+	text-decoration: none;
+	font-family: Arial, cursive;
+	float: left;
+
 }
 
 input[type=text],input[type=password] {
