@@ -9,13 +9,13 @@
 	define('DBPASS', 'vesko123');
 	define('DBNAME', 'dbtest');
 
-	$conn = mysql_connect(DBHOST,DBUSER,DBPASS);
-	$dbcon = mysql_select_db(DBNAME);
+	$connection = mysql_connect(DBHOST,DBUSER,DBPASS);
+	$db = mysql_select_db(DBNAME);
 
-	if ( !$conn ) {
+	if ( !$connection ) {
 	die("Connection failed : " . mysql_error());
 	}
 
-	if ( !$dbcon ) {
+	if ( !$db ) {
 	die("Database Connection failed : " . mysql_error());
 	}

@@ -1,47 +1,54 @@
 <?php
+ob_start();
 session_start(); // start
+require_once 'dbconnect.php';
 
-$error = ''; // var for error
+ // it will never let you open index(login) page if session is set
+if ( isset($_SESSION['login_user'])!="" ) {
+	header("Location: protected.php");
+	exit;
+}
+ 
+$error = false;
 
 if (isset($_POST['submit'])) {
-		if (empty($_POST['username']) || empty($_POST['password'])) {
-		$error = "Username or Password is invalid";
-	}
-	else {
-		// define $username and $password
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-		
-		// connectiing with the server by passing server_name, user_id and password as a parameter
-		$connection = mysql_connect("localhost", "boiko", "vesko123");
-		
-		// to protect MySQL injection for security purpose
-		$username = stripslashes($username);
-		$password = stripslashes($password);
-		$username = mysql_real_escape_string($username);
-		$password = mysql_real_escape_string($password);
-		
-		// selecting database
-		$db = mysql_select_db("dbtest", $connection);
-		
-		// SQL query to fetch information of registerd users and finds user match.
-		//$username = "' OR true OR '";
-		//$password = md5($password);
+	$email = trim($_POST['email']);
+	$email = strip_tags($email);
+	$email = htmlspecialchars($email);
 
-		$query = mysql_query("select * from users where userPass='$password' AND userName='$username'", $connection);
-		$rows = mysql_num_rows($query);
-		if ($rows == 1) {
-		
-			$_SESSION['login_user']=$username; // starting session
-			
-			header("location: protected.php"); // redirecting to other page
-			exit;
+	$pass = trim($_POST['pass']);
+	$pass = strip_tags($pass);
+	$pass = htmlspecialchars($pass);
+	// prevent sql injections / clear user invalid inputs
+
+	if(empty($email)){
+		$error = true;
+		$emailError = "Please enter your email address.";
+	} 
+	else if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
+		$error = true;
+		$emailError = "Please enter valid email address.";
+	}
+	  
+	if(empty($pass)){
+		$error = true;
+		$passError = "Please enter your password.";
+	}
+		//pass hash
+	if (!$error) {
+		$password = md5($pass);
+
+		$res=mysql_query("SELECT userId, userName, userPass FROM users WHERE userEmail='$email'");
+		$row=mysql_fetch_array($res);
+		$count = mysql_num_rows($res); // if uname/pass correct it returns must be 1 row
+
+		if( $count == 1 && $row['userPass']==$password ) {
+			$_SESSION['login_user'] = $row['userId'];
+			header("Location: protected.php");
 		} 
 		else {
-			$error = "Username or Password is invalid";
+			$errMSG = "Incorrect Credentials, Try again...";
 		}
-		
-		mysql_close($connection); // closing connection
 	}
 }
 ?>

@@ -2,8 +2,8 @@
 	ob_start();
 	session_start();
 	
-	if( isset($_SESSION['user'])!="" ){
-		header("Location: index.php");
+	if( isset($_SESSION['login_user'])!="" ){
+		header("Location: protected.php");
 	}
 	
 	include_once 'dbconnect.php';
@@ -28,15 +28,11 @@
 		// basic name validation
 		if (empty($name)) {
 			$error = true;
-			$nameError = "Please enter your full name.";
+			$nameError = "Please enter your username.";
 		}
-		else if (strlen($name) < 3) {
+		else if (strlen($name) < 4) {
 			$error = true;
-			$nameError = "Name must have atleat 3 characters.";
-		}
-		else if (!preg_match("/^[a-zA-Z ]+$/",$name)) {
-			$error = true;
-			$nameError = "Name must contain alphabets and space.";
+			$nameError = "Username must have atleast 4 characters.";
 		}
 
 		//basic email validation
@@ -70,7 +66,7 @@
 		// if there's no error, continue to signup
 		if( !$error ) {
 
-			$query = "INSERT INTO users(userName,userEmail,userPass) VALUES('$name','$email','$password')";
+			$query = "INSERT INTO users(userName,userEmail,userPass,balance) VALUES('$name','$email','$password',500)";
 			$res = mysql_query($query);
 
 			if ($res) {
@@ -102,8 +98,8 @@
 				<h2>Register Form</h2>
 				<hr>
 				<form id='register' method='post' accept-charset='UTF-8'>
-					<label for='name' >UserName: </label>
-					<input type='text' name='name' id='name' placeholder="Enter Name" maxlength="50"/>
+					<label for='name' >Username: </label>
+					<input type='text' name='name' id='name' placeholder="Enter Username" maxlength="50"/>
 					
 					<label for='email' >Email Address:</label>
 					<input type='text' name='email' id='email' placeholder="Enter Your Email" maxlength="40"/>
@@ -113,11 +109,18 @@
 					<hr>
 					<input type='submit' name='Submit' value='Register'/>
 
-					<span><?php echo $errMSG; ?></span>
+					<span>
+						<?php
+							echo "$nameError\n";
+							echo "$emailError\n";
+							echo "$passError\n";
+							echo $errMSG; 
+						?>
+					</span>
 				</form>
 			</div>
 
-			<div class="form-group">
+			<div id="change">
 				<a href="index.php">Sign in Here...</a>
             </div>
 		</div>

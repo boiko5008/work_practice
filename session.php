@@ -1,28 +1,25 @@
 <?php
-	// connection using mysql
-	$connection = mysql_connect("localhost", "boiko", "vesko123");
-	
-	// database
-	$db = mysql_select_db("dbtest", $connection);
-	session_start();// Starting Session
-	
-	if (!isset($_SESSION['login_user'])) {
-		header('Location: error_log.php'); // redirecting to home page
-		exit;
-	}
+ob_start();
+session_start();
+require_once 'dbconnect.php';
 
-	// Secret info
+if (!isset($_SESSION['login_user'])) {
+	header('Location: error_log.php'); // redirecting to home page
+	exit;
+}
 
-	// storing session
-	$user_check = $_SESSION['login_user'];
+// select loggedin users detail
+$res=mysql_query("SELECT * FROM users WHERE userId=".$_SESSION['login_user']);
+$userRow=mysql_fetch_array($res);
+
+if (isset($_POST['submit'])) {
+	$withdraw = $_POST['withdraw'];
 	
-	// SQL Query To Fetch Complete Information Of The User
-	$ses_sql=mysql_query("select userName from users where userName='$user_check'", $connection);
-	$row = mysql_fetch_assoc($ses_sql);
-	$login_session =$row['username'];
-	
-	if(!isset($login_session)){
-		mysql_close($connection); // closing connection
-		header('Location: error_log.php'); // redirecting to home page
-	}
+	$query = mysql_query(
+	"UPDATE users 
+	 SET balance = balance - '$withdraw'
+	 WHERE userName = '$user_check'", $connection);
+}
+
+
 ?>

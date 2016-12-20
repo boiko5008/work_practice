@@ -1,9 +1,6 @@
 <?php
 	include('login.php'); 
 	
-	if(isset($_SESSION['login_user'])) {
-	header("location: protected.php");
-	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,19 +16,25 @@
 				<h2>Login Form</h2>
 				<hr>
 				<form action="" method="post">
-					<label>UserName :</label>
-					<input id="name" name="username" placeholder="username" type="text">
-					
+					<label>Email :</label>
+					<input type="text" name="email" placeholder="Enter Your Email">
+
 					<label>Password :</label>
-					<input id="password" name="password" placeholder="**********" type="password">
+					<input id="password" name="pass" placeholder="**********" type="password">
 					<hr>
 					<input name="submit" type="submit" value=" Login ">
 					
-					<span><?php echo $error; ?></span>
+					<span>
+						<?php 
+							echo "$emailError\n";
+							echo "$passError\n";
+							echo "$errMSG\n";
+						?>
+					</span>
 				</form>
 			</div>
 			
-			<div class="form-group">
+			<div id="change">
 				<a href="register.php">Sign up Here...</a>
             </div>
 		</div>
