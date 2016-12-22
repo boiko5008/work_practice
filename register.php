@@ -29,8 +29,7 @@
 		if (empty($name)) {
 			$error = true;
 			$nameError = "Please enter your username.";
-		}
-		else if (strlen($name) < 4) {
+		} else if (strlen($name) < 4) {
 			$error = true;
 			$nameError = "Username must have atleast 4 characters.";
 		}
@@ -39,8 +38,7 @@
 		if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
 			$error = true;
 			$emailError = "Please enter valid email address.";
-		}
-		else {
+		} else {
 			// check email exist or not
 			$query = "SELECT userEmail FROM users WHERE userEmail='$email'";
 			$result = mysql_query($query);
@@ -54,14 +52,13 @@
 		if (empty($pass)){
 			$error = true;
 			$passError = "Please enter password.";
-		} 
-		else if(strlen($pass) < 6) {
+		} else if(strlen($pass) < 6) {
 			$error = true;
 			$passError = "Password must have atleast 6 characters.";
 		}
 
 		// password encrypt using md5();
-		$password = md5($password);
+		$password = md5($pass);
 
 		// if there's no error, continue to signup
 		if( !$error ) {
@@ -75,8 +72,7 @@
 				unset($name);
 				unset($email);
 				unset($pass);
-			}
-			else {
+			} else {
 				$errTyp = "danger";
 				$errMSG = "Something went wrong, try again later..."; 
 			}
@@ -126,3 +122,4 @@
 		</div>
 	</body>
 </html>
+<?php ob_end_flush(); ?>

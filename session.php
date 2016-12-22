@@ -1,6 +1,7 @@
 <?php
 ob_start();
 session_start();
+
 require_once 'dbconnect.php';
 
 if (!isset($_SESSION['login_user'])) {
@@ -8,18 +9,35 @@ if (!isset($_SESSION['login_user'])) {
 	exit;
 }
 
+$userId = $_SESSION['login_user'];
+
 // select loggedin users detail
-$res=mysql_query("SELECT * FROM users WHERE userId=".$_SESSION['login_user']);
-$userRow=mysql_fetch_array($res);
+$result = mysql_query("SELECT * FROM users WHERE userId = '$userId'");
+$userRow = mysql_fetch_array($result);
 
 if (isset($_POST['submit'])) {
-	$withdraw = $_POST['withdraw'];
+	$balance = intval($_POST['withdraw']);
+	$error = false;
+	//$balance = mysql_real_escape_string($balance);
 	
-	$query = mysql_query(
-	"UPDATE users 
-	 SET balance = balance - '$withdraw'
-	 WHERE userName = '$user_check'", $connection);
+	if (($userRow['balance'] - $balance) < 0) {
+		$error = true;
+		$balanceError = "You are out of money!";
+	}
+	
+	if (empty($balance)) {
+		$error = true;
+		$balanceError = "You did not input a sum.";
+	}
+
+	if (!$error) {
+		$query = "INSERT INTO transaction (userId, amount, text) VALUES ('$userId', -'$balance', 'Withdraw') ";
+		$result = mysql_query($query) or trigger_error(mysql_error()." ".$query);
+		$transactionId = mysql_insert_id();
+		
+		$query = 'UPDATE users SET balance = balance - ' . $balance . ' WHERE userId = ' . $userId;
+		$result = mysql_query($query) or trigger_error(mysql_error()." ".$query);
+		$userRow['balance'] -= $balance;
+	}
 }
-
-
 ?>

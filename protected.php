@@ -14,7 +14,7 @@
 		</div>
 		
 		<div>
-			<form>
+			<form method="post" action="">
 				<label>Enter desired balance:</label>
 				<input type="text" name="withdraw">
 
@@ -23,7 +23,10 @@
 		</div>
 
 		<?php
-			echo "You are logged in!";
+			echo "You are logged in!\n";
+			echo "{$userRow['balance']}<br>";
+			echo $balanceError;
 		?>
 	</body>
 </html>
+<?php ob_end_flush(); ?>
