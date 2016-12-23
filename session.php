@@ -30,6 +30,11 @@ if (isset($_POST['submit'])) {
 		$balanceError = "You did not input a sum.";
 	}
 
+	if ($balance < 0) {
+		$error = true;
+		$balanceError = "You can't enter negative digits!";
+	}
+
 	if (!$error) {
 		$query = "INSERT INTO transaction (userId, amount, text) VALUES ('$userId', -'$balance', 'Withdraw') ";
 		$result = mysql_query($query) or trigger_error(mysql_error()." ".$query);
